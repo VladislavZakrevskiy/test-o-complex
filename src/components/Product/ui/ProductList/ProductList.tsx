@@ -16,11 +16,6 @@ export const ProductList: FC<ProductListProps> = ({ products, fetchItems }) => {
 	const fetching = useRef(false);
 	const [pages, setPages] = useState([products]);
 	const items = pages.flatMap((page) => page);
-	const { initStore } = useBasketStore();
-
-	useEffect(() => {
-		initStore(localStorage.getItem(LOCALSTORAGE_STORE_KEY) || "{}");
-	}, []);
 
 	const loadMore = async (page: number) => {
 		if (!fetching.current) {
@@ -38,9 +33,9 @@ export const ProductList: FC<ProductListProps> = ({ products, fetchItems }) => {
 
 	return (
 		<InfiniteScroll
-			className="grid grid-cols-3 gap-5"
+			className="grid md:grid-cols-3 grid-cols-1 gap-5"
 			hasMore
-			pageStart={0}
+			pageStart={1}
 			loadMore={loadMore}
 			loader={
 				<HStack justifyContent="center" alignItems="center" key="loader">

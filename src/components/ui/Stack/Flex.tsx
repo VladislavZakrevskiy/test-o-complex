@@ -14,11 +14,11 @@ const justifyStyle: Record<JustifyContent, string> = {
 
 export type AlignItems = "start" | "end" | "center" | "baseline" | "stretch";
 const alignStyle: Record<AlignItems, string> = {
-	baseline: "align-baseline",
-	center: "align-center",
-	end: "align-end",
-	start: "align-start",
-	stretch: "align-stretch",
+	baseline: "items-baseline",
+	center: "items-center",
+	end: "items-end",
+	start: "items-start",
+	stretch: "items-stretch",
 };
 
 export type Gap = number;

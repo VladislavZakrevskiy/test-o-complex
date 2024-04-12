@@ -11,8 +11,12 @@ interface BuyButtonProps {
 
 export const BuyButton: FC<BuyButtonProps> = ({ product }) => {
 	const { id, title, price } = product;
-	const [productNumber, setProductNumber] = useState<number>(0);
-	const { changeBasketItem, deleteBasketItem } = useBasketStore();
+	const { changeBasketItem, deleteBasketItem, basket } = useBasketStore();
+	const productNumber = basket.find(([key]) => key === id) ? Number(basket.find(([key]) => key === id)?.[1]) : 0;
+
+	if (productNumber !== 0) {
+		console.log(id, productNumber);
+	}
 
 	useEffect(() => {
 		if (productNumber !== 0) {
@@ -26,17 +30,17 @@ export const BuyButton: FC<BuyButtonProps> = ({ product }) => {
 	if (productNumber !== 0) {
 		return (
 			<HStack gap={2}>
-				<Button onClick={() => setProductNumber((prev) => prev - 1)}>-</Button>
+				<Button onClick={() => changeBasketItem(id, productNumber - 1, title, price)}>-</Button>
 				<Input
-					onChange={(data) => setProductNumber(Number(data))}
+					onChange={(data) => changeBasketItem(id, Number(data), title, price)}
 					value={String(productNumber)}
 					type="number"
 					className="w-full"
 				/>
-				<Button onClick={() => setProductNumber((prev) => prev + 1)}>+</Button>
+				<Button onClick={() => changeBasketItem(id, productNumber + 1, title, price)}>+</Button>
 			</HStack>
 		);
 	}
 
-	return <Button onClick={() => setProductNumber(1)}>Купить</Button>;
+	return <Button onClick={() => changeBasketItem(id, 1, title, price)}>Купить</Button>;
 };

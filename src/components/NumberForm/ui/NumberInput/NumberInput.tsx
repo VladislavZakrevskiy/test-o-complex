@@ -35,7 +35,7 @@ ${splittedNumber[10] ? splittedNumber[10] : "_"}`;
 				changeNumber(decoded);
 			}}
 			value={codeMask(number)}
-			className="text-start"
+			className="text-start text-xl md:text-4xl"
 		/>
 	);
 };

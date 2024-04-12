@@ -6,13 +6,17 @@ import { Basket } from "../Basket/Basket";
 import { NumberInput } from "../NumberInput/NumberInput";
 import { useBasketStore } from "@/store/BasketStore";
 import axios from "axios";
+import { Modal } from "@/components/ui/Modal";
 
 export const NumberForm = () => {
 	const { basket, number } = useBasketStore();
 	const [error, setError] = useState<string[]>([]);
+	const [response, setResponse] = useState<number>(0);
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-	const onSubmit = () => {
+	const onSubmit = async () => {
 		setError([]);
+		setResponse(2);
 		const cart = [];
 		for (const [id, value] of basket) {
 			cart.push({
@@ -34,7 +38,9 @@ export const NumberForm = () => {
 			setError((prev) => [...prev, "Пустая корзина!"]);
 			return;
 		}
-		axios.post("http://o-complex.com:1337/order", { ...body });
+		const response = await axios.post("http://o-complex.com:1337/order", { ...body });
+		setResponse(response.data.success);
+		setIsModalOpen(true);
 	};
 
 	return (
@@ -45,17 +51,21 @@ export const NumberForm = () => {
 				</Text>
 				<Basket />
 			</VStack>
+
 			<form
 				onSubmit={(e) => {
 					e.preventDefault();
 					onSubmit();
 				}}
 			>
-				<HStack gap={4}>
+				<HStack gap={4} className="md:flex-row flex-col">
 					<NumberInput />
-					<Button type="submit">Заказать</Button>
+					<Button className="text-xl md:text-4xl" type="submit">
+						Заказать
+					</Button>
 				</HStack>
 			</form>
+
 			<VStack gap={2}>
 				{error.map((error) => (
 					<Text style={{ color: "red" }} key={error}>
@@ -63,6 +73,10 @@ export const NumberForm = () => {
 					</Text>
 				))}
 			</VStack>
+
+			<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+				<Text>{response ? "Успешно!" : "Проблемы на сервере! Чиним все, чтоюы вы могли заказать лучшую книгу!"}</Text>
+			</Modal>
 		</Card>
 	);
 };

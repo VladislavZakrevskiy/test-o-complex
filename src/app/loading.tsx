@@ -1,7 +1,12 @@
-import React from 'react'
+import { HStack, Loader } from "@/components/ui";
+import React from "react";
 
 const Loading = () => {
-    return <div>Loading</div>
-}
+	return (
+		<HStack className="w-screen h-screen" justifyContent="center" alignItems="center">
+			<Loader />
+		</HStack>
+	);
+};
 
-export default Loading
+export default Loading;
